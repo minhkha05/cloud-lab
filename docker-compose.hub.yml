@@ -1,0 +1,17 @@
+services:
+  backend:
+    image: mkha05/mern-backend:1.0
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      MONGODB_URI: ${MONGODB_URI}
+
+  frontend:
+    image: mkha05/mern-frontend:1.0
+    ports:
+      - "4173:4173"
+    environment:
+      __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: "${CODESPACE_NAME:-localhost}-4173.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-localhost}"
+    depends_on:
+      - backend
