@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const Student = require('./models/Student');
+const createCorsOptions = require('./cors-options');
+const createRequestLogger = require('./request-logger');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(createRequestLogger());
+app.use(cors(createCorsOptions()));
 app.use(express.json());
 
 // Kết nối MongoDB Atlas

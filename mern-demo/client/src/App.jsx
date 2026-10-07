@@ -2,18 +2,31 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const [students, setStudents] = useState([]);
+  const [loadError, setLoadError] = useState('');
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ studentId: '', name: '', email: '' });
   const [editingId, setEditingId] = useState(null); 
 
   // CÂU 63: Gọi lại API GET /api/students để cập nhật danh sách
-  const fetchStudents = async () => {
-    try {
-      const res = await fetch('/api/students');
+  const fetchStudents = () => {
+    return fetch('/api/students').then(async (res) => {
+      if (!res.ok) {
+        throw new Error(`Không tải được dữ liệu (HTTP ${res.status}). Hãy kiểm tra Backend và kết nối MongoDB.`);
+      }
       const data = await res.json();
+      if (!Array.isArray(data)) {
+        throw new Error('API không trả về danh sách sinh viên hợp lệ.');
+      }
+      return data;
+    }).then((data) => {
+      setLoadError('');
       setStudents(data);
-    } catch (err) {
+    }).catch((err) => {
+      setLoadError(err.message);
       console.error('Lỗi khi tải danh sách:', err);
-    }
+    }).finally(() => {
+      setLoading(false);
+    });
   };
 
   useEffect(() => {
@@ -115,6 +128,20 @@ function App() {
       </form>
 
       <h3>Danh Sách Sinh Viên</h3>
+      {loading && <p role="status">Đang tải danh sách sinh viên...</p>}
+      {loadError && (
+        <div role="alert">
+          <p style={{ color: '#b00020' }}>{loadError}</p>
+          <button type="button" onClick={() => {
+            setLoading(true);
+            setLoadError('');
+            fetchStudents();
+          }}>Thử lại</button>
+        </div>
+      )}
+      {!loading && !loadError && students.length === 0 && (
+        <p>Chưa có sinh viên. Bạn có thể thêm sinh viên bằng biểu mẫu phía trên.</p>
+      )}
       <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
         <thead>
           <tr style={{ backgroundColor: '#f2f2f2' }}>
