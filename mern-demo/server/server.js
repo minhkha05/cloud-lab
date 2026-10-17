@@ -80,5 +80,5 @@ app.delete('/api/students/:id', async (req, res) => {
 
 // Khởi chạy Server
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`Backend v1.2 - Auto Deploy qua Docker Hub Webhook - Server running on port ${PORT}`);
 });
