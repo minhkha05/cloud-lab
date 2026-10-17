@@ -79,6 +79,15 @@ app.delete('/api/students/:id', async (req, res) => {
 });
 
 // Khởi chạy Server
+// Health Check Endpoint cho Cloud PaaS Monitoring
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'UP',
+    timestamp: new Date(),
+    uptime: process.uptime()
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Backend v1.2 - Auto Deploy qua Docker Hub Webhook - Server running on port ${PORT}`);
 });
