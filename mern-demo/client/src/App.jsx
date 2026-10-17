@@ -100,7 +100,8 @@ function App() {
 
   return (
     <div style={{ padding: '24px', fontFamily: 'Arial, sans-serif', maxWidth: '850px', margin: '0 auto' }}>
-      <h2>Quản Lý Sinh Viên MERN - Phiên Bản 2.0</h2>
+      <h2>Quản Lý Sinh Viên MERN</h2>
+      <p>Phiên bản 2.0 - Production Cloud PaaS (Auto-Deployed)</p>
 
       <form onSubmit={handleSubmit} style={{ marginBottom: '24px', padding: '16px', border: '1px solid #ccc', borderRadius: '8px' }}>
         <h3>{editingId ? '✏️ Cập Nhật Thông Tin' : '➕ Thêm Sinh Viên'}</h3>
